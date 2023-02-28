@@ -1,15 +1,7 @@
-import { View, Text } from "react-native";
+import StackNavigationJS from "./Navigator/StackNavigationJS";
 
-export default function App() {
+export default function App({ navigation }) {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Universal React with Expo</Text>
-    </View>
+      <StackNavigationJS />
   );
 }
