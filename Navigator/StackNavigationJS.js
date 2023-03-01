@@ -1,7 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from 'react'
-import BottomNavigator from "../components/BottomNavigator";
 
 import Calendar from "../Pages/Calendar";
 import Home from "../Pages/Home";
