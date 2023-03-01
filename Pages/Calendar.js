@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { PanGestureHandler } from 'react-native-gesture-handler'
 
 import BottomNavigator from '../components/BottomNavigator'
 
@@ -41,15 +42,42 @@ const Calendar = ({ navigation }) => {
 
     //전월 마지막주 마지막일까지 채우기
     for (let i = 1; i <= curMonthStartWeek; i++) {
-      createMonthArr.push({ date: lastMonthMax - curMonthStartWeek + i, isCur: false })
+      //선택을 위해 모든 정보 담기
+      let datedoc = {
+        year: selYear,
+        month: selMonth - 1,
+        date: lastMonthMax - curMonthStartWeek + i,
+        isCur: false,
+      }
+      if (selMonth - 1 < 1) {
+        datedoc.year -= 1
+        datedoc.month = 12
+      }
+      createMonthArr.push(datedoc)
     }
     //이어서 현재월 마지막일까지 채우기
     for (let i = 0; i < curMonthMax; i++) {
-      createMonthArr.push({ date: createCurDate++, isCur: true })
+      let datedoc = {
+        year: selYear,
+        month: selMonth,
+        date: createCurDate++,
+        isCur: true,
+      }
+      createMonthArr.push(datedoc)
     }
     //남은자리 익월 시작일부터 채우기
     for (let i = 0; i < 6 - curMonthLastWeek; i++) {
-      createMonthArr.push({ date: createNextDate++, isCur: false })
+      let datedoc = {
+        year: selYear,
+        month: selMonth + 1,
+        date: createNextDate++,
+        isCur: false,
+      }
+      if (selMonth + 1 > 12) {
+        datedoc.year += 1
+        datedoc.month = 1
+      }
+      createMonthArr.push(datedoc)
     }
 
     //만들어진 달력배열을 출력
@@ -65,7 +93,7 @@ const Calendar = ({ navigation }) => {
         >
           {/* //선택된 날짜만 border그려서 표시
               //현재 일자 외에는 날짜글자색을 #bbb로 변경 */}
-          {curDate.Day === v.date && curDate.Month === selMonth && curDate.Year === selYear && v.isCur ?
+          {curDate.Day === v.date && curDate.Month === v.month && curDate.Year === v.year ?
             <View style={{ borderWidth: 2, margin: 6, borderRadius: 50, borderColor: '#46e' }}>
               <Text style={{ color: `${v.isCur === false ? '#bbb' : '#000'}`, textAlign: 'center', textAlignVertical: 'center', height: '100%', width: '100%', }}>{v.date}</Text>
             </View> :
@@ -84,7 +112,7 @@ const Calendar = ({ navigation }) => {
             setSelMonth(curDate.Month)
           }}
         >
-          <Text>선택중인 달력으로 가기</Text>
+          <Text style={{ borderWidth: 1, padding: 10, borderRadius: 10 }}>선택중인 달력으로 가기</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -94,8 +122,6 @@ const Calendar = ({ navigation }) => {
 
   //날짜 선택
   const SelectDate = (data) => {
-
-    console.log(data);
     //기본적으로는 해당 날짜 선택
     if (data.isCur === true) {
       setCurDate({ Day: data.date, Year: selYear, Month: selMonth })
