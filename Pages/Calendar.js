@@ -49,7 +49,7 @@ const Calendar = ({ navigation }) => {
     }
   }
 
-  //달력
+  //달력 ---------------------------------------------------버벅거림으로 계산을 바꿈
   const CalCreate = (getYear, getMonth) => {
     let lastMonth = []
     let curMonth = []
@@ -148,6 +148,7 @@ const Calendar = ({ navigation }) => {
 
   //날짜 선택
   const SelectDate = (data) => {
+    // 다른 달의 날짜 선택시 그 달로 이동하기
     if (selMonth > data.Month)
       SelectMonth(-1)
     else if (selMonth < data.Month)
@@ -158,6 +159,7 @@ const Calendar = ({ navigation }) => {
 
   //화살표로 달력바꾸기
   const SelectMonth = (plusMonth) => {
+    //화살표도 애니메이션처리
     // if (plusMonth > 0)
     //   setAniMove(aniMove - 320)
     // else if (plusMonth < 0)
